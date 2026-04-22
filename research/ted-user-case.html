@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TED Tender Query User Case Document</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..600&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="light"] {
+  --color-bg: #f7f6f2; --color-surface: #f9f8f5; --color-surface-2: #fbfbf9;
+  --color-surface-offset: #f3f0ec; --color-divider: #dcd9d5; --color-border: #d4d1ca;
+  --color-text: #28251d; --color-text-muted: #7a7974; --color-text-faint: #bab9b4;
+  --color-primary: #01696f; --color-primary-hover: #0c4e54;
+  --color-primary-highlight: #cedcd8;
+  --color-warning: #964219; --color-warning-highlight: #ddcfc6;
+  --color-error: #a12c7b; --color-error-highlight: #e0ced7;
+  --color-success: #437a22; --color-success-highlight: #d4dfcc;
+  --color-orange: #da7101; --color-orange-highlight: #e7d7c4;
+  --shadow-sm: 0 1px 2px oklch(0.2 0.01 80 / 0.06);
+  --shadow-md: 0 4px 12px oklch(0.2 0.01 80 / 0.08);
+  --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem;
+  --radius-xl: 1rem; --radius-full: 9999px;
+  --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem;
+  --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+  --space-12: 3rem; --space-16: 4rem; --space-20: 5rem;
+  --text-xs: clamp(.75rem, .7rem + .25vw, .875rem);
+  --text-sm: clamp(.875rem, .8rem + .35vw, 1rem);
+  --text-base: clamp(1rem, .95rem + .25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + .75vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+  --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'Inter', 'Helvetica Neue', sans-serif;
+  --content-narrow: 640px; --content-default: 760px; --content-wide: 960px;
+  --transition: 180ms cubic-bezier(.16, 1, .3, 1);
+}
+[data-theme="dark"] {
+  --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #201f1d;
+  --color-surface-offset: #1d1c1a; --color-divider: #262523; --color-border: #393836;
+  --color-text: #cdccca; --color-text-muted: #797876; --color-text-faint: #5a5957;
+  --color-primary: #4f98a3; --color-primary-hover: #227f8b;
+  --color-primary-highlight: #313b3b;
+  --color-warning: #bb653b; --color-warning-highlight: #564942;
+  --color-error: #d163a7; --color-error-highlight: #4c3d46;
+  --color-success: #6daa45; --color-success-highlight: #3a4435;
+  --color-orange: #fdab43; --color-orange-highlight: #564b3e;
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / .2); --shadow-md: 0 4px 12px oklch(0 0 0 / .3);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #201f1d;
+    --color-surface-offset: #1d1c1a; --color-divider: #262523; --color-border: #393836;
+    --color-text: #cdccca; --color-text-muted: #797876; --color-text-faint: #5a5957;
+    --color-primary: #4f98a3; --shadow-sm: 0 1px 2px oklch(0 0 0 / .2);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; scroll-padding-top: var(--space-16); }
+body { min-height: 100dvh; font-family: var(--font-body); font-size: var(--text-base); color: var(--color-text); background: var(--color-bg); line-height: 1.65; }
+img, svg { display: block; max-width: 100%; }
+h1, h2, h3, h4 { text-wrap: balance; line-height: 1.15; font-family: var(--font-display); }
+p, li { text-wrap: pretty; max-width: 72ch; }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+a, button { transition: color var(--transition), background var(--transition), border-color var(--transition), box-shadow var(--transition); }
+
+/* LAYOUT */
+.page { max-width: var(--content-wide); margin-inline: auto; padding: var(--space-12) var(--space-6); }
+.doc-header { padding-block: var(--space-16) var(--space-10); border-bottom: 1px solid var(--color-divider); margin-bottom: var(--space-10); }
+.doc-meta { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-6); align-items: center; }
+.badge { font-size: var(--text-xs); font-family: var(--font-body); font-weight: 500; padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); background: var(--color-primary-highlight); color: var(--color-primary); letter-spacing: .04em; text-transform: uppercase; }
+.badge.orange { background: var(--color-orange-highlight); color: var(--color-orange); }
+.badge.muted { background: var(--color-surface-offset); color: var(--color-text-muted); }
+.doc-title { font-size: var(--text-2xl); color: var(--color-text); margin-bottom: var(--space-4); font-style: italic; }
+.doc-subtitle { font-size: var(--text-base); color: var(--color-text-muted); max-width: 60ch; line-height: 1.7; }
+
+/* NAV */
+.toc { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); margin-bottom: var(--space-10); }
+.toc-title { font-size: var(--text-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--space-4); }
+.toc-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+.toc-list a { color: var(--color-text-muted); text-decoration: none; font-size: var(--text-sm); display: flex; align-items: center; gap: var(--space-2); }
+.toc-list a:hover { color: var(--color-primary); }
+.toc-num { font-size: var(--text-xs); color: var(--color-text-faint); min-width: 1.5rem; }
+
+/* SECTIONS */
+.section { margin-bottom: var(--space-12); padding-bottom: var(--space-12); border-bottom: 1px solid var(--color-divider); }
+.section:last-child { border-bottom: none; }
+.section-label { font-size: var(--text-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-4); }
+.section-title { font-size: var(--text-xl); color: var(--color-text); margin-bottom: var(--space-6); }
+.section-body { color: var(--color-text-muted); line-height: 1.75; margin-bottom: var(--space-6); }
+.section-body p { margin-bottom: var(--space-4); }
+.section-body p:last-child { margin-bottom: 0; }
+
+/* FRICTION CARDS */
+.friction-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: var(--space-4); margin-top: var(--space-6); }
+.friction-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm); }
+.friction-num { font-size: var(--text-xs); font-weight: 700; color: var(--color-text-faint); letter-spacing: .1em; margin-bottom: var(--space-3); }
+.friction-title { font-size: var(--text-base); font-weight: 600; color: var(--color-text); margin-bottom: var(--space-3); font-family: var(--font-body); }
+.friction-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.7; max-width: none; }
+.friction-card.high .friction-num { color: var(--color-error); }
+.friction-card.med .friction-num { color: var(--color-warning); }
+.friction-card.low .friction-num { color: var(--color-success); }
+
+/* JOURNEY */
+.journey { margin-top: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3); }
+.journey-step { display: grid; grid-template-columns: 2.5rem 1fr; gap: var(--space-4); align-items: start; }
+.journey-step-num { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-full); background: var(--color-surface-offset); display: flex; align-items: center; justify-content: center; font-size: var(--text-xs); font-weight: 700; color: var(--color-text-muted); flex-shrink: 0; margin-top: .15rem; }
+.journey-step.problem .journey-step-num { background: var(--color-error-highlight); color: var(--color-error); }
+.journey-step.neutral .journey-step-num { background: var(--color-surface-offset); color: var(--color-text-muted); }
+.journey-step-title { font-size: var(--text-sm); font-weight: 600; color: var(--color-text); margin-bottom: var(--space-1); font-family: var(--font-body); }
+.journey-step-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.65; max-width: none; }
+.journey-connector { width: 2px; height: var(--space-3); background: var(--color-divider); margin-left: calc(1.25rem - 1px); }
+
+/* QUOTE */
+.callout { background: var(--color-surface); border-left: 3px solid var(--color-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: var(--space-5) var(--space-6); margin: var(--space-6) 0; }
+.callout-text { font-size: var(--text-base); color: var(--color-text); font-style: italic; font-family: var(--font-display); line-height: 1.65; max-width: none; }
+.callout-source { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-2); font-style: normal; font-family: var(--font-body); }
+
+/* REQUIREMENTS TABLE */
+.req-table { width: 100%; border-collapse: collapse; margin-top: var(--space-6); font-size: var(--text-sm); }
+.req-table th { text-align: left; padding: var(--space-3) var(--space-4); font-size: var(--text-xs); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-muted); border-bottom: 2px solid var(--color-divider); background: var(--color-surface); }
+.req-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-divider); color: var(--color-text); vertical-align: top; line-height: 1.6; }
+.req-table tr:last-child td { border-bottom: none; }
+.req-table tr:hover td { background: var(--color-surface); }
+.priority { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--text-xs); font-weight: 600; padding: .15rem var(--space-2); border-radius: var(--radius-full); }
+.priority.must { background: var(--color-error-highlight); color: var(--color-error); }
+.priority.should { background: var(--color-warning-highlight); color: var(--color-warning); }
+.priority.could { background: var(--color-success-highlight); color: var(--color-success); }
+
+/* INSIGHT BOX */
+.insight { background: linear-gradient(135deg, var(--color-primary-highlight), var(--color-surface)); border: 1px solid var(--color-primary-highlight); border-radius: var(--radius-xl); padding: var(--space-8); margin: var(--space-8) 0; }
+.insight-label { font-size: var(--text-xs); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-3); }
+.insight-text { font-size: var(--text-lg); font-family: var(--font-display); color: var(--color-text); line-height: 1.55; max-width: none; }
+
+/* HEADER NAV */
+.top-bar { position: sticky; top: 0; z-index: 100; background: color-mix(in oklab, var(--color-bg) 90%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-divider); padding: var(--space-3) var(--space-6); display: flex; justify-content: space-between; align-items: center; }
+.top-bar-title { font-size: var(--text-sm); color: var(--color-text-muted); font-family: var(--font-body); }
+.theme-toggle { background: none; border: none; cursor: pointer; color: var(--color-text-muted); padding: var(--space-2); border-radius: var(--radius-md); display: flex; align-items: center; }
+.theme-toggle:hover { color: var(--color-text); background: var(--color-surface-offset); }
+
+/* FOOTER */
+.doc-footer { margin-top: var(--space-12); padding-top: var(--space-8); border-top: 1px solid var(--color-divider); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); }
+.doc-footer p { font-size: var(--text-xs); color: var(--color-text-faint); max-width: none; }
+
+@media (max-width: 600px) {
+  .page { padding: var(--space-8) var(--space-4); }
+  .doc-header { padding-block: var(--space-10) var(--space-8); }
+  .friction-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span class="top-bar-title">User Case Document &mdash; TED Tender Query System</span>
+  <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+  </button>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="doc-header">
+    <div class="doc-meta">
+      <span class="badge">User Research</span>
+      <span class="badge orange">Procurement Intelligence</span>
+      <span class="badge muted">April 2026</span>
+    </div>
+    <h1 class="doc-title">Querying EU Tender Data as a Domain Expert</h1>
+    <p class="doc-subtitle">A user case document capturing friction points, user journey, and requirements for a new intelligent query system for TED (Tenders Electronic Daily) procurement data.</p>
+  </header>
+
+  <!-- TOC -->
+  <nav class="toc" aria-label="Table of contents">
+    <p class="toc-title">Contents</p>
+    <ol class="toc-list">
+      <li><a href="#user-profile"><span class="toc-num">01</span>User Profile</a></li>
+      <li><a href="#context"><span class="toc-num">02</span>Context &amp; Goal</a></li>
+      <li><a href="#friction"><span class="toc-num">03</span>Friction Points</a></li>
+      <li><a href="#journey"><span class="toc-num">04</span>Current User Journey</a></li>
+      <li><a href="#insight"><span class="toc-num">05</span>Core Insight</a></li>
+      <li><a href="#requirements"><span class="toc-num">06</span>System Requirements</a></li>
+      <li><a href="#success"><span class="toc-num">07</span>Definition of Success</a></li>
+    </ol>
+  </nav>
+
+  <!-- SECTION 1: USER PROFILE -->
+  <section class="section" id="user-profile">
+    <p class="section-label">01 &mdash; User Profile</p>
+    <h2 class="section-title">Who is the user?</h2>
+    <div class="section-body">
+      <p>The user is a <strong>business development professional or domain expert</strong> working in a specialist industry &mdash; in this case, digital health and cardiac telemonitoring. They have deep knowledge of their market: the clinical terminology, the key players, the product categories, the regulatory context.</p>
+      <p>They are <strong>not a data engineer or procurement officer</strong>. They do not know SPARQL, RDF, or the eProcurement Ontology. They have never heard of CPV codes. Their goal is business intelligence &mdash; understanding market activity, identifying opportunities, tracking competitor wins &mdash; not technical data extraction.</p>
+      <p>They work in English and operate across multiple European markets, including countries where they do not speak the local language (e.g., Italy, Germany, France).</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: CONTEXT -->
+  <section class="section" id="context">
+    <p class="section-label">02 &mdash; Context &amp; Goal</p>
+    <h2 class="section-title">What does the user want to do?</h2>
+    <div class="section-body">
+      <p>The user wants to answer a straightforward business question:</p>
+    </div>
+    <div class="callout">
+      <p class="callout-text">&ldquo;Show me all EU public tenders related to heart failure telemonitoring in Italy over the past 5 years &mdash; who bought, how much, which suppliers won.&rdquo;</p>
+      <p class="callout-source">Typical user query</p>
+    </div>
+    <div class="section-body">
+      <p>This is a <strong>market sizing and opportunity identification task</strong>. The user expects to type a topic in plain English, select a country and date range, and receive structured, readable results &mdash; similar to how they would use Google, LinkedIn Sales Navigator, or a market intelligence platform.</p>
+      <p>The underlying data exists in TED (Tenders Electronic Daily), the EU&rsquo;s official procurement database. Over 750,000 notices are published annually across 27 member states.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 3: FRICTION POINTS -->
+  <section class="section" id="friction">
+    <p class="section-label">03 &mdash; Friction Points</p>
+    <h2 class="section-title">Where does the current system fail the user?</h2>
+    <div class="friction-grid">
+      <div class="friction-card high">
+        <p class="friction-num">CRITICAL &mdash; 01</p>
+        <p class="friction-title">The user knows their domain, not the classification system</p>
+        <p class="friction-desc">TED organises all data around CPV codes &mdash; a bureaucratic EU classification taxonomy created for procurement officers. The user knows &ldquo;heart failure telemonitoring&rdquo;; they have no way to know this maps to CPV 33123200. There is no intuitive bridge between industry language and the required vocabulary.</p>
+      </div>
+      <div class="friction-card high">
+        <p class="friction-num">CRITICAL &mdash; 02</p>
+        <p class="friction-title">Cross-language blindness</p>
+        <p class="friction-desc">The user operates in English. Italian tenders are written in Italian, German tenders in German. Keyword search is therefore useless &mdash; the words the user would naturally type do not appear in the documents they are looking for. There is no built-in translation layer in the system.</p>
+      </div>
+      <div class="friction-card high">
+        <p class="friction-num">CRITICAL &mdash; 03</p>
+        <p class="friction-title">No feedback loop &mdash; silent failure</p>
+        <p class="friction-desc">When a query returns zero or few results, the user cannot tell if this means &ldquo;nothing exists&rdquo; or &ldquo;you asked the wrong question.&rdquo; There is no relevance score, no &ldquo;did you mean,&rdquo; no confidence indicator. The system provides silence with no guidance on how to improve the query.</p>
+      </div>
+      <div class="friction-card med">
+        <p class="friction-num">HIGH &mdash; 04</p>
+        <p class="friction-title">CPV codes are too coarse for niche themes</p>
+        <p class="friction-desc">Even if the user finds a relevant CPV code, the classification is broad. &ldquo;Cardiac monitoring devices&rdquo; covers everything from a basic ECG to a cloud telemonitoring platform. Conversely, a telemonitoring tender may be filed under &ldquo;health IT services&rdquo; or &ldquo;miscellaneous health services.&rdquo; The theme is scattered across unrelated codes with no consistent pattern.</p>
+      </div>
+      <div class="friction-card med">
+        <p class="friction-num">HIGH &mdash; 05</p>
+        <p class="friction-title">Query requires technical expertise the user should not need</p>
+        <p class="friction-desc">To extract data properly, the user must learn SPARQL, understand RDF graph structure, know URI formats for country codes, navigate the eProcurement Ontology namespace, and implement pagination. This is infrastructure work, not the user&rsquo;s job. The technical barrier excludes the exact professionals who need this data most.</p>
+      </div>
+      <div class="friction-card low">
+        <p class="friction-num">MEDIUM &mdash; 06</p>
+        <p class="friction-title">Results arrive in raw procurement language</p>
+        <p class="friction-desc">Even when results are retrieved successfully, notice titles and descriptions are in the originating country&rsquo;s language, use procurement jargon, and reference internal contract codes. The user cannot quickly assess relevance without manual translation and context-building for each result.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: USER JOURNEY -->
+  <section class="section" id="journey">
+    <p class="section-label">04 &mdash; Current User Journey</p>
+    <h2 class="section-title">What does the user actually go through today?</h2>
+    <div class="journey">
+      <div class="journey-step neutral">
+        <div class="journey-step-num">1</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">User identifies a business need</p>
+          <p class="journey-step-desc">Wants to know the size of the HF telemonitoring procurement market in Italy. Searches for a reliable data source and lands on TED / OP-TED GitHub.</p>
+        </div>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step problem">
+        <div class="journey-step-num">2</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">Tries keyword search &mdash; fails immediately</p>
+          <p class="journey-step-desc">Types &ldquo;telemonitoring&rdquo; or &ldquo;heart failure monitoring&rdquo; into TED search. Gets few or zero results from Italy because Italian tenders use Italian keywords. Has no indication of why results are sparse.</p>
+        </div>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step problem">
+        <div class="journey-step-num">3</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">Discovers CPV codes are required &mdash; learning curve begins</p>
+          <p class="journey-step-desc">Learns that data is structured around CPV codes, not keywords. Must now research which CPV codes are relevant to their niche. Uses external tools (SIMAP, LLM assistants) to build a shortlist. Time cost: 1&ndash;3 hours.</p>
+        </div>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step problem">
+        <div class="journey-step-num">4</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">Discovers SPARQL is required to query properly</p>
+          <p class="journey-step-desc">The TED UI search is insufficient for structured multi-field queries. Learns about the SPARQL endpoint. Must learn RDF graph structure, eProcurement Ontology predicates, URI formats for countries, and pagination. Time cost: several hours to days for a non-technical user.</p>
+        </div>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step problem">
+        <div class="journey-step-num">5</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">Runs queries &mdash; uncertain about completeness</p>
+          <p class="journey-step-desc">Gets some results but cannot verify if the dataset is complete. Is unsure whether low result counts reflect a small market, wrong CPV codes, or incorrect query syntax. No feedback mechanism exists to validate coverage.</p>
+        </div>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step neutral">
+        <div class="journey-step-num">6</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">Manually translates and filters results</p>
+          <p class="journey-step-desc">Exports data in Italian. Uses Google Translate or DeepL to read notice titles and descriptions. Manually judges relevance for each row. Significant time investment for what should be an automated filtering task.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: INSIGHT -->
+  <section class="section" id="insight">
+    <p class="section-label">05 &mdash; Core Insight</p>
+    <h2 class="section-title">The fundamental problem</h2>
+    <div class="insight">
+      <p class="insight-label">Product Insight</p>
+      <p class="insight-text">TED was built for compliance, not intelligence. It enables procurement officers to publish notices and auditors to verify them. It was never designed for a business development professional asking &ldquo;What is the activity level of the HF telemonitoring market in Italy over 5 years?&rdquo; That question is entirely reasonable. The system makes it unnecessarily hard to answer.</p>
+    </div>
+    <div class="section-body">
+      <p>The gap between <strong>what the user knows</strong> (domain expertise, industry language, business questions) and <strong>what the system requires</strong> (CPV codes, SPARQL, multi-language awareness) is the core product opportunity. A new system should eliminate this gap entirely &mdash; the user should never have to learn procurement infrastructure to get procurement intelligence.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 6: REQUIREMENTS -->
+  <section class="section" id="requirements">
+    <p class="section-label">06 &mdash; System Requirements</p>
+    <h2 class="section-title">What should the new system do?</h2>
+    <table class="req-table">
+      <thead>
+        <tr>
+          <th>Requirement</th>
+          <th>Description</th>
+          <th>Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Natural language input</strong></td>
+          <td>User types a theme in plain English (&ldquo;heart failure telemonitoring&rdquo;). System translates this to relevant CPV codes automatically, without requiring user knowledge of the taxonomy.</td>
+          <td><span class="priority must">Must have</span></td>
+        </tr>
+        <tr>
+          <td><strong>Language-neutral retrieval</strong></td>
+          <td>Query execution must not depend on matching keywords in the target language. Retrieval via CPV codes or semantic classification ensures Italian, German, and French tenders are found regardless of their language.</td>
+          <td><span class="priority must">Must have</span></td>
+        </tr>
+        <tr>
+          <td><strong>Country &amp; date range filters</strong></td>
+          <td>Simple UI controls for selecting country (e.g., Italy) and date range (e.g., last 5 years). No knowledge of URI formats or RDF country codes required.</td>
+          <td><span class="priority must">Must have</span></td>
+        </tr>
+        <tr>
+          <td><strong>Auto-translated results</strong></td>
+          <td>Notice titles and descriptions returned in the user&rsquo;s preferred language (English), with the original language indicated. Removes manual translation step entirely.</td>
+          <td><span class="priority must">Must have</span></td>
+        </tr>
+        <tr>
+          <td><strong>Query confidence indicator</strong></td>
+          <td>System communicates whether a result set is likely complete, partially covered, or uncertain. Indicates if low results are due to small market or possible missed CPV codes.</td>
+          <td><span class="priority must">Must have</span></td>
+        </tr>
+        <tr>
+          <td><strong>CPV expansion (parent/children)</strong></td>
+          <td>System automatically broadens search to include parent and child CPV codes of the matched concept, to avoid missing tenders filed under adjacent classifications.</td>
+          <td><span class="priority should">Should have</span></td>
+        </tr>
+        <tr>
+          <td><strong>Structured result fields</strong></td>
+          <td>Results display notice date, buyer name, buyer country, contract value, CPV label, winner name (where available), procedure type. Exportable to CSV.</td>
+          <td><span class="priority should">Should have</span></td>
+        </tr>
+        <tr>
+          <td><strong>Saved searches &amp; alerts</strong></td>
+          <td>User can save a theme + country combination and receive alerts when new matching notices are published. Enables ongoing market monitoring.</td>
+          <td><span class="priority could">Could have</span></td>
+        </tr>
+        <tr>
+          <td><strong>Market summary view</strong></td>
+          <td>Aggregate view showing total tender count, total value, top buyers, and trend over time for a given theme + country combination. Answers &ldquo;how big is this market?&rdquo; in one screen.</td>
+          <td><span class="priority could">Could have</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SECTION 7: SUCCESS -->
+  <section class="section" id="success">
+    <p class="section-label">07 &mdash; Definition of Success</p>
+    <h2 class="section-title">When has the system solved the problem?</h2>
+    <div class="section-body">
+      <p>The system succeeds when a domain expert with <strong>no knowledge of CPV codes, SPARQL, or Italian</strong> can:</p>
+    </div>
+    <div class="journey">
+      <div class="journey-step neutral">
+        <div class="journey-step-num">1</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">Type a theme in plain English</p>
+          <p class="journey-step-desc">&ldquo;Heart failure telemonitoring&rdquo; &mdash; no taxonomy knowledge required.</p>
+        </div>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step neutral">
+        <div class="journey-step-num">2</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">Select country and date range from a UI</p>
+          <p class="journey-step-desc">Italy, 2021&ndash;2026. No URI formats or RDF syntax required.</p>
+        </div>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step neutral">
+        <div class="journey-step-num">3</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">Receive results in English within seconds</p>
+          <p class="journey-step-desc">Structured rows with buyer, value, date, translated title. Immediately readable and actionable.</p>
+        </div>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step neutral">
+        <div class="journey-step-num">4</div>
+        <div class="journey-step-content">
+          <p class="journey-step-title">Export to CSV and use in their workflow</p>
+          <p class="journey-step-desc">No manual translation, no data cleaning. Ready to import into a spreadsheet or dashboard.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top: var(--space-8);">
+      <p class="callout-text">&ldquo;Total time from question to usable data: under 2 minutes. Today, it takes 2&ndash;3 days for a non-technical domain expert.&rdquo;</p>
+      <p class="callout-source">Target benchmark</p>
+    </div>
+  </section>
+
+  <footer class="doc-footer">
+    <p>Prepared for internal product team use &mdash; TED Tender Intelligence System &mdash; April 2026</p>
+    <p>Based on direct user research &amp; session analysis</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const t = document.querySelector('[data-theme-toggle]'),
+        r = document.documentElement;
+  let d = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  r.setAttribute('data-theme', d);
+  t && t.addEventListener('click', () => {
+    d = d === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', d);
+    t.setAttribute('aria-label', 'Switch to ' + (d === 'dark' ? 'light' : 'dark') + ' mode');
+    t.innerHTML = d === 'dark'
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  });
+})();
+</script>
+
+</body>
+</html>
