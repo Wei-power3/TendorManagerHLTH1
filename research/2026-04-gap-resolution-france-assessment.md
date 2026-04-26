@@ -129,6 +129,17 @@ The Layer 2 problem in France is structurally identical to Italy: a large market
 
 ***
 
+## Open Items and Follow-up
+
+Two items from this document remain unresolved and are the subject of a follow-up clarification brief sent to the researcher:
+
+1. **Germany summary table entry is unvalidated.** The final table above includes a "Conditional" rating for Germany with no supporting research section, no API tested, and no document URLs verified. The researcher has been asked to either provide evidence or remove the row.
+2. **Denmark healthcare IT volume is unconfirmed.** The "Viable — conditional on confirming healthcare IT tender volume" verdict requires a CPV-filtered count from `udbud.dk` for 2023–2024. That count was not provided in this document.
+
+See: [`2026-04-germany-denmark-clarification-brief.md`](./2026-04-germany-denmark-clarification-brief.md)
+
+***
+
 ## Footnotes
 
 [^1]: Estonian Public Procurement Register annual statistics 2023, `riigihanked.riik.ee`.
