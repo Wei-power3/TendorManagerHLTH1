@@ -13,6 +13,7 @@ One file per research artifact. Use the naming pattern `YYYY-MM-topic.ext`. Add 
 | [ted-user-case.html](./ted-user-case.html) | User case document | April 2026 | — | TED tender query — friction points, user journey, system requirements | Filed |
 | [2026-04-ted-data-architecture.md](./2026-04-ted-data-architecture.md) | Research summary + user story | 2026-04-23 | Weiche Lin | TED data architecture — two-layer problem, CIG linking key, phase sequencing for Tender Monitor | Filed |
 | [2026-04-pivot-decision.md](./2026-04-pivot-decision.md) | Decision note | 2026-04-24 | Weiche Lin | Pivot decision — v1 plan suspended; Layer 2 specification data not accessible via public APIs | Filed |
+| [2026-04-gap-resolution-france-assessment.md](./2026-04-gap-resolution-france-assessment.md) | Research update | 2026-04-26 | — | Gap resolution (Estonia, Netherlands, Denmark) + France assessment — Layer 2 viability by country | Filed |
 
 ## Notes
 
